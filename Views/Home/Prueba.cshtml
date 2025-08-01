@@ -1,0 +1,212 @@
+﻿@model PRUEBA1.Models.Clientes
+@{
+    ViewData["Title"] = "Prueba";
+}
+<style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css" >
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+<h1>Prueba</h1>
+
+<div>
+    <h1 class="text-info">hola mundo</h1>
+    <h2>hola mundo</h2>
+    <h3>hola mundo</h3>
+    <h4>hola mundo</h4>
+    <h5>hola mundo5</h5>
+    <h6>hola mundo6</h6>
+    <h7>hola mundo7</h7>
+    <h8>hola mundo8</h8>
+    <h9>hola mundo9</h9>
+</div>
+
+<div class="row">
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-8">
+        <div>
+            <input type="button" id="btn1" />
+            <input type="date" id="btn11" />
+            <input type="checkbox" id="chc11" />
+            <input type="text" id="txt1" />
+            <input type="text" id="txt12" />
+            <input type="text" id="txt13" />
+            <label class="form-control"> NOMBRE</label>
+            <input type="text" id="txt15" />
+        </div>
+
+    </div>
+
+
+    @* <div class="container col-sm-8">
+        <label class="col-2">NOMBRE</label>
+        <textarea class="col-8" type="text" id="txt15" />
+    </div>
+    @* <div class="col-sm-8">
+        <label class="form-control"> NOMBRE</label>
+        <input type="text" id="txt15" />
+    </div> *@
+
+    <textarea></textarea>
+
+    <div class="col-sm-1">
+    </div>
+
+    <input type="button" class="btn btn-info" value="prueba1" onclick="prueba1()" />
+    <input type="button" class="btn btn-secondary" value="prueba2" />
+    <input type="button" class="btn btn-success" value="prueba3" />
+    <input type="text" name="name" value="" onblur="numero()" />
+    <p id="demo"></p>
+    <p id="demo1"></p>
+
+
+</div>
+
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>Bienvenidos</h1>
+            <p>Presentación con HTML y Reveal.js</p>
+        </section>
+        <section>
+            <h2>Segunda Diapositiva</h2>
+            <p>Contenido adicional aquí.</p>
+        </section>
+        <section>
+            <h2>Gracias</h2>
+            <p>¡Gracias por tu atención!</p>
+        </section>
+    </div>
+</div>
+
+<canvas id="miCanvas" width="600" height="500"></canvas>
+
+<input id="btncargar" type="button" class="btn btn-info" value="Cargar Table" />
+<br />
+<table id="prueba" class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>NOMBRE</th>
+            <th>APELLIDO</th>
+            <th>CEDULA</th>
+        </tr>
+    </thead>
+        <tbody></tbody>
+</table>
+
+/* <script>
+       var canvas = document.getElementById('miCanvas');
+       var ctx = canvas.getContext('2d');
+
+       var data = [50, 100, 150, 200, 250, 350];  // Valores para las barras
+
+       console.log(data.length);
+
+       var colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow'];
+
+       for (var i = 0; i < data.length; i++) {
+         ctx.fillStyle = colors[i];
+         ctx.fillRect(50 + i * 100, canvas.height - data[i], 50, data[i]);  // Dibuja cada barra
+         console.log(i);
+       }
+</script> */
+
+<script>
+    var canvas = document.getElementById('miCanvas');
+    var ctx = canvas.getContext('2d');
+    var x = 0;
+    var speed = 2;
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);  // Borra el canvas
+      ctx.fillStyle = 'red';
+      ctx.fillRect(x, 100, 150, 150);  // Dibuja el cuadrado
+      x += speed;
+      if (x > canvas.width - 10 || x < 0) {
+        speed = -speed;  // Cambia la dirección cuando llega al borde
+      }
+      requestAnimationFrame(animate);  // Llama a la función para la siguiente animación
+    }
+
+    animate();  // Inicia la animación
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script>
+    Reveal.initialize();
+</script>
+
+<script type="text/javascript">
+
+
+        function numero(){
+               console.log("paso por aqui!!!");
+
+        }
+
+        function prueba1()
+        {
+
+            Swal.fire({
+              title: "Ingrese los valores correctos",
+              text: ".....",
+              icon: "success"
+            });
+
+            console.log("prueba1");
+            alert("hola mundo");
+
+            document.getElementById("demo").innerHTML = "Hello World";
+            console.log("prueba11");
+            $('#demo1').html("Prueba 2");
+            console.log("prueba12");
+            console.log("prueba12");
+
+            const datos = '{"nombre": "Luis", "Apellido": "Delgado", "Apellido2": "Durán"}';
+            console.log(datos);
+            const objeto =JSON.parse(datos);
+            console.log(objeto);
+    }
+
+
+
+
+    $(document).ready(function(){
+       $('#btncargar').click(function(event){
+
+            $.ajax({
+                    type: "POST",
+                    url: "/Clientes/CargarInfo", //'@Url.Action("CreateAJAX")',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);
+                        $.each(result, function(i, item){                                
+                            /*  console.log(item.nombre);
+                                console.log(item.apellido);
+                                console.log(item.cedula); */
+
+                                const row= '<tr>' +    
+                                               '<td>' + item.nombre + '</td>' +
+                                               '<td>' + item.apellido + '</td>' +
+                                               '<td>' + item.cedula + '</td>' +
+                                            '</tr>'
+                                $('#prueba tbody').append(row);
+                        });
+                        
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+            });
+         });
+    });
+
+</script>
+
+
+

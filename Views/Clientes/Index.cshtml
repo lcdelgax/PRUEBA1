@@ -1,0 +1,155 @@
+﻿@model IEnumerable<PRUEBA1.Models.Clientes>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<button id="btnCargarClientes" class="btn btn-outline-success " onclick="obtenerDatosJson()">
+    <i class="fa-regular fa-bell"></i> Cargar desde Json
+</button>
+
+<div class="form-group">
+    <i class="fa-solid fa-cloud-arrow-up"></i>
+    <label for="jsonFileInput">Cargar archivo JSON:</label>
+    <input type="file" id="jsonFileInput" accept=".json" class="form-control" />
+    <p class="error-message" id="jsonErrorMessage" style="display: none;">Por favor, seleccione un archivo JSON válido.</p>
+</div>
+<table class="table" id="jsontable" style="display:none">
+    <thead>
+        <tr>
+            <th>PK</th>
+            <th>NOMBRE</th>
+            <th>APELLIDO1</th>
+        </tr>
+
+    </thead>
+    <tbody id="jsonTableBody">
+    </tbody>
+
+</table>
+
+@* <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cedula)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cedula)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.pkclientes">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.pkclientes">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.pkclientes">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@
+
+<script type="text/javascript">
+     function  obtenerDatosJson(){
+                console.log("Obteniendo clientes en formato JSON...");
+
+     }
+
+     document.getElementById('jsonFileInput').addEventListener('change', function(datos){
+
+              console.log("Obteniendo clientes en formato JSON...");
+
+              var archivo = datos.target.files[0];
+                 if (archivo &&  archivo.type === "application/json" ){
+                    procesarJson (archivo);
+                    document.getElementById('jsonErrorMessage').style.display= 'none';
+
+                 }
+                 else {
+                    document.getElementById('jsonErrorMessage').style.display= 'block';
+                    document.getElementById('jsontable').style.display= 'none';
+
+                 }
+
+     });
+
+     function procesarJson (archivo){
+              console.log("Procesar JSON...");   
+              var reader = new FileReader();
+              reader.onload = function(e){
+                    var jsonData = JSON.parse(e.target.result);
+                    MostarJson(jsonData)  ;
+              };
+              reader.readAsText(archivo);
+     
+     }
+
+     function MostarJson(datos){
+     
+         var table = document.getElementById("jsontable");
+         var tbody = document.getElementById("jsonTableBody");
+
+        tbody.innerHTML = "";
+                debugger;
+        if (datos.length > 0) {
+            table.style.display = "table";
+        } else {
+            table.style.display = "none";
+        }
+
+         datos.forEach(function (cliente) {
+            
+            var tr = document.createElement("tr");
+             var PK = cliente.pk || cliente.PK || "N/A";
+            var nombre = cliente.nombre || cliente.NOMBRE || "N/A";
+            var apellido1 = cliente.apellidO1 || cliente.APELLIDO1 || "N/A";
+            // var apellido2 = cliente.apellidO2 || cliente.APELLIDO2 || "N/A";
+            // var cedula = cliente.cedula || cliente.CEDULA || "N/A";
+            // var sexo = cliente.sexo || cliente.SEXO || "N/A";
+
+
+            // <th>PK</th>
+            // <th>NOMBRE</th>
+            // <th>APELLIDO1</th>
+
+
+            tr.innerHTML = `  
+                <td>${PK}</td>
+                <td>${nombre}</td>
+                <td>${apellido1}</td>                
+            `;
+            tbody.appendChild(tr);
+        });
+
+     }
+
+    // function cambiar()   {
+
+    //         console.log("Obteniendo clientes en formato JSON...");
+    // }
+
+
+</script>

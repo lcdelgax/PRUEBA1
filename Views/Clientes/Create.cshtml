@@ -1,0 +1,88 @@
+﻿@model PRUEBA1.Models.Clientes
+
+@{
+    ViewData["Title"] = "Create";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+
+<h1>Create</h1>
+
+<h4>Clientes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="apellido" class="control-label"></label>
+                <input asp-for="apellido" class="form-control" />
+                <span asp-validation-for="apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="cedula" class="control-label"></label>
+                <input asp-for="cedula" class="form-control" />
+                <span asp-validation-for="cedula" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="button" class="btn btn-primary" value="Guardar AJAX" id="guardarajax" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+       $('#guardarajax').click(function(event){
+
+           var cliente = {
+                    nombre:$('#nombre').val(),
+                    apellido: $('#apellido').val(),
+                    cedula:  $('#cedula').val()
+           }  ;
+
+           console.log(cliente) ;
+
+            $.ajax({
+                    type: "POST",
+                    url: "CreateAJAX", //'@Url.Action("CreateAJAX")',
+                    contentType: 'application/json',
+                    data: JSON.stringify(cliente),
+                    dataType: 'json',
+                    success: function (result) {
+                        if  (result == 'éxito'){
+                             console.log("Paso por aqui correcto...!!!");
+                             // if  sweealert.is ="ok"{
+                             window.location.href = "Index";
+                             // }   
+                            console.log(result);
+                        }
+                        else{
+                            console.log("error");
+                        }
+          
+            },
+            error: function (error) {
+                console.log(error);
+            }
+            });
+         });
+    });
+
+</script>
+//1. la funcionadad del ajax debe de estar termida, en el success de ajax se envie un mensaje con sweetalert, que indique "El registro fué guardado exisotamente!!!!",
+caso contario que indique que no lo hizo.
+2.luego de darlke ok al mensaje que se redireccione si es correcto a la pagina principal.
+3. se debe de dar forma, a la vista de create, acomoando los objetos con como se menciono en la clase, 
+    Nombre: y a la par la caja de texto, todo los objetos deben de ser centrados y el boton de guardar ajax deberá esta alineado a la derecha.
+4. darle estilo a la tabla de clientes con la funcionalidad de class=" ..... "
+5. recortes o pantallas donde se envie el mensaje tanto de bueno como malo, y codigo del ajax y controlador
